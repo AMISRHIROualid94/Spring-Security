@@ -1,15 +1,18 @@
 package com.springframwork.springSecurity.config;
 
+import com.springframwork.springSecurity.entity.User;
+import com.springframwork.springSecurity.repository.UserRepository;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -31,13 +34,13 @@ public class SecurityConfig{
         };
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
       return   http
                 .authorizeHttpRequests()
-                        .requestMatchers("/","/**")
+              .requestMatchers("/welcome").hasRole("USER")
+              .requestMatchers("/","/**")
                         .permitAll()
               .and()
                         .formLogin()
@@ -56,20 +59,11 @@ public class SecurityConfig{
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder){
-        List<UserDetails> userDetailsList = new ArrayList<>();
-        userDetailsList.add(
-                new User(
-                        "dodo",
-                        encoder.encode("dodopassword"),
-                        Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")))
-        );
-        userDetailsList.add(
-                new User(
-                        "fofo",
-                        encoder.encode("fofopassword"),
-                        Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")))
-        );
-        return new InMemoryUserDetailsManager(userDetailsList);
+    public UserDetailsService userDetailsService(UserRepository userRepository){
+        return username -> {
+            User user = userRepository.findUserByUsername(username);
+            if(user != null) return user;
+            throw new UsernameNotFoundException("user "+ user +" Not found");
+        };
     }
 }
