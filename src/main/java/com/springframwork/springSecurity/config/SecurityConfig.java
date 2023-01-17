@@ -11,25 +11,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig{
+
+
+
+
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .formLogin()
-                .loginPage("/login")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and()
-                .build();
-    }
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
+        return http.authorizeHttpRequests()
+                        .requestMatchers("/","/**")
+                        .permitAll()
+                        .and()
+                        .formLogin()
+                        .loginPage("/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/welcome",true)
+                        .and()
+                        .build();
+    }
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -37,18 +47,19 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder){
-       /* return username -> {
-            User user = userRepository.findUserByUserName(username);
-            if(user != null) return user;
-            throw new UsernameNotFoundException("user" + user + " Not found");
-        };*/
-       List<UserDetails> userDetailsList = new ArrayList<>();
-        userDetailsList.add(new User("dodo",encoder.encode("passworddodo"), Arrays.asList(
-                new SimpleGrantedAuthority("ROLE_USER")
-        )));
-        userDetailsList.add(new User("fofo",encoder.encode("passwordfofo"), Arrays.asList(
-                new SimpleGrantedAuthority("ROLE_USER")
-        )));
+        List<UserDetails> userDetailsList = new ArrayList<>();
+        userDetailsList.add(
+                new User(
+                        "dodo",
+                        encoder.encode("dodopassword"),
+                        Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")))
+        );
+        userDetailsList.add(
+                new User(
+                        "fofo",
+                        encoder.encode("fofopassword"),
+                        Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")))
+        );
         return new InMemoryUserDetailsManager(userDetailsList);
     }
 }

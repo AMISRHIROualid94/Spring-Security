@@ -1,7 +1,10 @@
-package com.springframwork.springSecurity.domain;
+package com.springframwork.springSecurity.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,18 +12,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Arrays;
 import java.util.Collection;
 
-@Data
-@NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
-@RequiredArgsConstructor
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
 @Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private final String username;
+    private Long Id;
+    private String username;
     private final String password;
+    private final String email;
 
 
     @Override

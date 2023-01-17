@@ -2,24 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>Registration Page</title>
     <link th:href="@{/style.css}" rel="stylesheet" />
 </head>
 <body>
-<div class="loginForm">
-    <h1>Log In </h1>
+<div class="registerForm">
+    <h1>Register</h1>
     <form method="post" th:action="@{/login}">
         <label>Username :</label>
         <input type="text" name="username">
-        <br>
-        <br>
         <label>password :</label>
         <input type="password" name="password">
-        <br>
-        <br>
-        <input type="submit" value="Login">
+        <label>Email :</label>
+        <input type="email" name="email">
+        <input type="submit" value="Register">
     </form>
 </div>
-
 </body>
 </html>
