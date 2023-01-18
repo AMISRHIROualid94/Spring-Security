@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +19,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig{
+    private final UserRepository userRepository;
+
+    public SecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     @Bean
@@ -27,13 +33,12 @@ public class SecurityConfig{
         };
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
       return   http
                     .authorizeHttpRequests()
-                    .requestMatchers("/welcome").hasRole("USER")
+                    .requestMatchers("/welcome","/test/**").hasRole("USER")
                     .requestMatchers("/","/**")
                     .permitAll()
               .and()

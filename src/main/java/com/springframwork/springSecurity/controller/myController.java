@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
@@ -24,6 +25,12 @@ public class myController {
     @RequestMapping("/")
     public String home(){
         return "home";
+    }
+
+    @RequestMapping("/test/{username}")
+    public String getUsernameParam(@PathVariable String username,Model model){
+        model.addAttribute("username",username);
+        return "test";
     }
 
     @RequestMapping("/welcome")

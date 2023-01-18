@@ -7,5 +7,7 @@
 </head>
 <body>
         <h1 th:text="'Welcome ' + ${user.getUsername()}"></h1>
+        <br>
+        <a th:text="'Send '+${user.getUsername()}+' parametre'" th:href="'/test/'+${user.getUsername()}"></a>
 </body>
 </html>
