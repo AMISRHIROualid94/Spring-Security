@@ -1,8 +1,6 @@
 package com.springframwork.springSecurity.controller;
 
-
-
-import com.springframwork.springSecurity.entity.User;
+import com.springframwork.springSecurity.models.User;
 import com.springframwork.springSecurity.registerForm.RegisterForm;
 import com.springframwork.springSecurity.repository.UserRepository;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

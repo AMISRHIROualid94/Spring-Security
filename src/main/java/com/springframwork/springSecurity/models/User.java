@@ -1,4 +1,4 @@
-package com.springframwork.springSecurity.entity;
+package com.springframwork.springSecurity.models;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,8 +16,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
-
-    @Id
+    @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
     private final String username;

@@ -1,6 +1,6 @@
 package com.springframwork.springSecurity.registerForm;
 
-import com.springframwork.springSecurity.entity.User;
+import com.springframwork.springSecurity.models.User;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
